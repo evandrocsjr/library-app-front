@@ -9,7 +9,7 @@ export default function Sidebar() {
         <img src={logoImg} alt={""} width={100} />
       </SidebarLogoContainer>
       <hr />
-      <ul>
+      <ul className="ps-0">
         <SidebarItem>
           <i>
             <House size={27} />

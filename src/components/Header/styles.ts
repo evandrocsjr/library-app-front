@@ -7,8 +7,8 @@ export const HeaderContainer = styled.header`
   box-shadow: black 1px 0.3px 4px;
   max-height: 3.3rem;
   display: flex;
-  opacity: 0.7;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: flex-end;
   position: static;
 
   img {

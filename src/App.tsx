@@ -1,15 +1,17 @@
-import Header from "./components/Header";
 import { ThemeProvider } from "styled-components";
 import { defaultTheme } from "./styles/themes/default";
 import { GlobalStyle } from "./styles/global";
-import Sidebar from "./components/Sidebar";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Router } from "./Router";
+import { BrowserRouter } from "react-router-dom";
 
 export default function App() {
   return (
     <ThemeProvider theme={defaultTheme}>
-      <GlobalStyle />
-      <Header />
-      <Sidebar />
+      <BrowserRouter>
+        <GlobalStyle />
+        <Router />
+      </BrowserRouter>
     </ThemeProvider>
   );
 }
