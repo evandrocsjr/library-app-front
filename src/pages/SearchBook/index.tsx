@@ -1,4 +1,4 @@
-import { Book } from "phosphor-react";
+import { Book, Check, X } from "phosphor-react";
 import {
   Accordion,
   AccordionButton,
@@ -8,14 +8,73 @@ import {
   Card,
   CardBody,
   Divider,
-  Flex,
   Heading,
   HStack,
   Input,
-  Spacer,
   Text,
 } from "@chakra-ui/react";
 import { TableComponent } from "../components/TableComponent";
+import { createColumnHelper } from "@tanstack/react-table";
+
+export type BookProps = {
+  code: string;
+  name: string;
+  releaseDate: Date;
+  progress: number;
+  availability: boolean;
+};
+
+const columnHelper = createColumnHelper<BookProps>();
+
+const dataInfo: BookProps[] = [
+  {
+    code: "811.134.3'asd232 aaas",
+    name: "tanner",
+    releaseDate: new Date(),
+    progress: 50,
+    availability: false,
+  },
+  {
+    code: "811.134.3'3232 A485d",
+    name: "tandy",
+    releaseDate: new Date(),
+    progress: 80,
+    availability: true,
+  },
+  {
+    code: "811.134.3'282 A485d",
+    name: "joe",
+    releaseDate: new Date(),
+    progress: 10,
+    availability: true,
+  },
+];
+
+const columns = [
+  columnHelper.accessor("name", {
+    cell: (info) => info.getValue(),
+    header: () => "Nome",
+    footer: (info) => info.column.id,
+  }),
+  columnHelper.accessor("code", {
+    cell: (info) => info.getValue(),
+    header: () => "Identificação",
+  }),
+  columnHelper.accessor((row) => row.releaseDate, {
+    id: "releaseDate",
+    cell: (info) => info.getValue().toLocaleDateString(),
+    header: () => <span>Data de Lançamento</span>,
+    footer: (info) => info.column.id,
+  }),
+  columnHelper.accessor("availability", {
+    cell: (info) => (
+      <Box display="flex" justifyContent="center">
+        {!info.getValue() ? <X /> : <Check />}
+      </Box>
+    ),
+    header: () => "Disponibilidade",
+  }),
+];
 
 export function SearchBook() {
   return (
@@ -60,7 +119,10 @@ export function SearchBook() {
             </AccordionItem>
           </Accordion>
 
-          <TableComponent></TableComponent>
+          <TableComponent
+            dataInfo={dataInfo}
+            columns={columns}
+          ></TableComponent>
         </CardBody>
       </Card>
     </div>
