@@ -1,17 +1,18 @@
 import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
 import { Outlet } from "react-router-dom";
+import { Box, Flex } from "@chakra-ui/react";
 
 export function DefaultLayout() {
   return (
     <div>
       <Header />
-      <div className={"d-flex"}>
+      <Flex>
         <Sidebar />
-        <div className={"p-3 w-100"}>
+        <Box padding="1rem" flex="1">
           <Outlet />
-        </div>
-      </div>
+        </Box>
+      </Flex>
     </div>
   );
 }

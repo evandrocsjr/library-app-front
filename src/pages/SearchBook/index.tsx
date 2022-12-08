@@ -1,40 +1,68 @@
 import { Book } from "phosphor-react";
-import { Accordion, Form, InputGroup } from "react-bootstrap";
+import {
+  Accordion,
+  AccordionButton,
+  AccordionItem,
+  AccordionPanel,
+  Box,
+  Card,
+  CardBody,
+  Divider,
+  Flex,
+  Heading,
+  HStack,
+  Input,
+  Spacer,
+  Text,
+} from "@chakra-ui/react";
+import { TableComponent } from "../components/TableComponent";
 
 export function SearchBook() {
   return (
     <div>
-      <h3 className={"fw-bold"}>
-        <Book /> Pesquisa de Livros
-      </h3>
-      <hr />
+      <Heading as="h3" size="lg" display="flex" alignItems="center">
+        <Book />
+        <Text>Pesquisa de Livros</Text>
+      </Heading>
 
-      <div className={"card"}>
-        <div className={"card-body"}>
-          <span>Nome do Livro</span>
-          <Form.Control></Form.Control>
+      <Divider orientation="horizontal" my="1rem" />
 
-          <hr className={"d-flex m-3"} />
+      <Card>
+        <CardBody>
+          <div>
+            <Text>Nome do Livro</Text>
+            <Input />
+          </div>
 
-          <Accordion>
-            <Accordion.Item eventKey={"0"}>
-              <Accordion.Header>Mais Filtros</Accordion.Header>
-              <Accordion.Body className={"row"}>
-                <div className={"col-6"}>
-                  <span>Nome do Autor</span>
-                  <Form.Control />
-                </div>
-                <div className={"col-6"}>
-                  <span>Data de Lançamento</span>
-                  <Form.Control type={"date"} />
-                </div>
+          <Divider orientation="horizontal" my="1rem" />
 
-                <div className={"col-12"}></div>
-              </Accordion.Body>
-            </Accordion.Item>
+          <Accordion allowToggle>
+            <AccordionItem>
+              <h2>
+                <AccordionButton _expanded={{ bg: "blue.300", color: "white" }}>
+                  <Box flex="1" textAlign="left">
+                    Mais Filtros
+                  </Box>
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4}>
+                <HStack spacing="1rem">
+                  <Box w="50%">
+                    <Text>Nome do Autor</Text>
+                    <Input />
+                  </Box>
+                  <Box w="50%">
+                    <Text>Data de Lançamento</Text>
+                    <Input />
+                  </Box>
+                </HStack>
+              </AccordionPanel>
+            </AccordionItem>
           </Accordion>
-        </div>
-      </div>
+
+          <TableComponent></TableComponent>
+        </CardBody>
+      </Card>
     </div>
   );
 }
