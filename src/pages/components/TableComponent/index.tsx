@@ -4,7 +4,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 
 interface TableComponentProps<TData> {
@@ -16,7 +16,11 @@ export function TableComponent<TData extends object>({
   dataInfo,
   columns,
 }: TableComponentProps<TData>) {
-  const [data, setData] = useState(() => [...dataInfo]);
+  const [data, setData] = useState<TData[]>([]);
+
+  useEffect(() => {
+    setData([...dataInfo]);
+  }, [dataInfo]);
 
   const table = useReactTable({
     data,
@@ -25,7 +29,7 @@ export function TableComponent<TData extends object>({
   });
 
   return (
-    <Box w="100%" mt={4}>
+    <Box w="100%" mt={"2rem"}>
       <Table w="100%" variant="striped" colorScheme="gray">
         <Thead>
           {table.getHeaderGroups().map((headerGroup) => (
