@@ -1,34 +1,54 @@
 {
   "books": [
     {
+      "id": 1,
       "code": "5s74a6d54as-5a4sd",
       "name": "Livro 1",
       "releaseDate": "22-01-22",
-      "availability": true
+      "availability": true,
+      "author": {
+        "name": "João Paulo"
+      }
     },
     {
+      "id": 2,
       "code": "5sa456d4a-5a4sd352",
       "name": "Livro 2",
       "releaseDate": "22-01-22",
-      "availability": true
+      "availability": true,
+      "author": {
+        "name": "João Paulo"
+      }
     },
     {
+      "id": 3,
       "code": "5as44das-as5d4as",
       "name": "Livro 3",
       "releaseDate": "22-01-22",
-      "availability": true
+      "availability": true,
+      "author": {
+        "name": "João Paulo"
+      }
     },
     {
+      "id": 4,
       "code": "a5s4d5a4-s54d564as",
       "name": "Livro 4",
       "releaseDate": "22-01-22",
-      "availability": true
+      "availability": true,
+      "author": {
+        "name": "João Paulo"
+      }
     },
     {
+      "id": 5,
       "code": "2139823-22aaa",
       "name": "Livro 5",
       "releaseDate": "22-01-22",
-      "availability": true
+      "availability": true,
+      "author": {
+        "name": "João Paulo"
+      }
     }
   ]
 }

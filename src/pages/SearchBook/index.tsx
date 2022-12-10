@@ -19,8 +19,12 @@ import {
 import { TableComponent } from "../components/TableComponent";
 import { createColumnHelper } from "@tanstack/react-table";
 import { useQuery } from "react-query";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "../../lib/axios";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { getBooks } from "../../services/BookService";
 
 export type BookProps = {
   code: string;
@@ -28,33 +32,12 @@ export type BookProps = {
   releaseDate: Date;
   progress: number;
   availability: boolean;
+  author: {
+    name: string;
+  };
 };
 
 const columnHelper = createColumnHelper<BookProps>();
-
-// const dataInfo: BookProps[] = [
-//   {
-//     code: "811.134.3'asd232 aaas",
-//     name: "tanner",
-//     releaseDate: new Date(),
-//     progress: 50,
-//     availability: false,
-//   },
-//   {
-//     code: "811.134.3'3232 A485d",
-//     name: "tandy",
-//     releaseDate: new Date(),
-//     progress: 80,
-//     availability: true,
-//   },
-//   {
-//     code: "811.134.3'282 A485d",
-//     name: "joe",
-//     releaseDate: new Date(),
-//     progress: 10,
-//     availability: true,
-//   },
-// ];
 
 const columns = [
   columnHelper.accessor("name", {
@@ -72,6 +55,12 @@ const columns = [
     header: () => <span>Data de Lançamento</span>,
     footer: (info) => info.column.id,
   }),
+  columnHelper.accessor((row) => row.author.name, {
+    id: "author",
+    cell: (info) => info.getValue(),
+    header: () => <span>Nome do Autor</span>,
+    footer: (info) => info.column.id,
+  }),
   columnHelper.accessor("availability", {
     cell: (info) => (
       <Box display="flex" justifyContent="center">
@@ -82,14 +71,42 @@ const columns = [
   }),
 ];
 
+const searchBookFormSchema = z.object({
+  name: z.string(),
+  author: z.object({
+    name: z.string(),
+  }),
+});
+
+type SearchBookFormInput = z.infer<typeof searchBookFormSchema>;
+
 export function SearchBook() {
   const [books, setBooks] = useState<BookProps[]>([]);
-
-  const { isLoading, error, data, isFetching } = useQuery(["data"], () => {
-    api.get("books").then((r) => {
-      setBooks(r.data);
-    });
+  const { register, handleSubmit, reset } = useForm<SearchBookFormInput>({
+    resolver: zodResolver(searchBookFormSchema),
   });
+
+  const { isLoading, data } = useQuery("book", getBooks);
+  console.log(data);
+
+  let dataBookParams: SearchBookFormInput;
+
+  function handleSearchBook(dataBook: SearchBookFormInput) {
+    console.log("sdadasd");
+    dataBookParams = dataBook;
+    // const { isLoading, error, data, isFetching } = useQuery(["data"], () => {
+    //   api.get("books", { headers: { params: dataBook } }).then((r) => {
+    //     setBooks(r.data);
+    //   });
+    // });
+  }
+
+  // const teste = useQuery(["data"], () => {
+  //   api.get("books", { params: { dataBookParams } }).then((r) => {
+  //     setBooks(r.data);
+  //   });
+  // });
+  // const getBooks = async () => {};
 
   return (
     <div>
@@ -102,50 +119,53 @@ export function SearchBook() {
 
       <Card>
         <CardBody>
-          <div>
-            <Text>Nome do Livro</Text>
-            <InputGroup>
-              <Input borderRightRadius={0} />
-              <Button
-                variant="solid"
-                isLoading={isLoading}
-                loadingText={"Carregando"}
-                borderLeftRadius="0"
-              >
-                <MagnifyingGlass size={32} /> Pesquisar
-              </Button>
-            </InputGroup>
-          </div>
-
-          <Divider orientation="horizontal" my="1rem" />
-
-          <Accordion allowToggle>
-            <AccordionItem>
-              <h2>
-                <AccordionButton
-                  bg={"gray.200"}
-                  _expanded={{ bg: "blue.300", color: "white" }}
+          <form onSubmit={handleSubmit(handleSearchBook)}>
+            <div>
+              <Text>Nome do Livro</Text>
+              <InputGroup>
+                <Input borderRightRadius={0} {...register("name")} />
+                <Button
+                  variant="solid"
+                  isLoading={isLoading}
+                  loadingText={"Carregando"}
+                  borderLeftRadius="0"
+                  type="submit"
                 >
-                  <Box flex="1" textAlign="left">
-                    <Text fontWeight="bold">Mais Filtros</Text>
-                  </Box>
-                  <AccordionIcon />
-                </AccordionButton>
-              </h2>
-              <AccordionPanel pb={4}>
-                <HStack spacing="1rem">
-                  <Box w="50%">
-                    <Text>Nome do Autor</Text>
-                    <Input />
-                  </Box>
-                  <Box w="50%">
-                    <Text>Data de Lançamento</Text>
-                    <Input type="datetime-local" />
-                  </Box>
-                </HStack>
-              </AccordionPanel>
-            </AccordionItem>
-          </Accordion>
+                  <MagnifyingGlass size={32} /> Pesquisar
+                </Button>
+              </InputGroup>
+            </div>
+
+            <Divider orientation="horizontal" my="1rem" />
+
+            <Accordion allowToggle>
+              <AccordionItem>
+                <h2>
+                  <AccordionButton
+                    bg={"gray.200"}
+                    _expanded={{ bg: "blue.300", color: "white" }}
+                  >
+                    <Box flex="1" textAlign="left">
+                      <Text fontWeight="bold">Mais Filtros</Text>
+                    </Box>
+                    <AccordionIcon />
+                  </AccordionButton>
+                </h2>
+                <AccordionPanel pb={4}>
+                  <HStack spacing="1rem">
+                    <Box w="50%">
+                      <Text>Nome do Autor</Text>
+                      <Input {...register("author.name")} />
+                    </Box>
+                    <Box w="50%">
+                      <Text>Data de Lançamento</Text>
+                      <Input type="datetime-local" />
+                    </Box>
+                  </HStack>
+                </AccordionPanel>
+              </AccordionItem>
+            </Accordion>
+          </form>
           <TableComponent dataInfo={books} columns={columns}></TableComponent>
         </CardBody>
       </Card>
