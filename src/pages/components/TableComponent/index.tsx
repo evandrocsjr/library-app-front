@@ -18,8 +18,9 @@ export function TableComponent<TData extends object>({
 }: TableComponentProps<TData>) {
   const [data, setData] = useState<TData[]>([]);
 
+  console.log(dataInfo);
   useEffect(() => {
-    setData([...dataInfo]);
+    if (dataInfo) setData([...dataInfo]);
   }, [dataInfo]);
 
   const table = useReactTable({

@@ -18,15 +18,24 @@ import {
 } from "@chakra-ui/react";
 import { TableComponent } from "../components/TableComponent";
 import { createColumnHelper } from "@tanstack/react-table";
-import { useQuery } from "react-query";
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { api } from "../../lib/axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { getBooks } from "../../services/BookService";
+import {
+  getBookById,
+  getBooks,
+  getBooksWithProps,
+} from "../../services/BookService";
 
 export type BookProps = {
+  id: number;
   code: string;
   name: string;
   releaseDate: Date;
@@ -81,32 +90,22 @@ const searchBookFormSchema = z.object({
 type SearchBookFormInput = z.infer<typeof searchBookFormSchema>;
 
 export function SearchBook() {
-  const [books, setBooks] = useState<BookProps[]>([]);
+  const queryClient = useQueryClient();
+  // Form Validation
   const { register, handleSubmit, reset } = useForm<SearchBookFormInput>({
     resolver: zodResolver(searchBookFormSchema),
   });
 
-  const { isLoading, data } = useQuery("book", getBooks);
-  console.log(data);
+  const { isLoading, data: books } = useQuery("books", getBooks);
 
-  let dataBookParams: SearchBookFormInput;
-
+  const getBookMutation = useMutation(getBooksWithProps, {
+    onSuccess: ({ data }) => {
+      queryClient.setQueriesData("books", data);
+    },
+  });
   function handleSearchBook(dataBook: SearchBookFormInput) {
-    console.log("sdadasd");
-    dataBookParams = dataBook;
-    // const { isLoading, error, data, isFetching } = useQuery(["data"], () => {
-    //   api.get("books", { headers: { params: dataBook } }).then((r) => {
-    //     setBooks(r.data);
-    //   });
-    // });
+    getBookMutation.mutate(dataBook.name);
   }
-
-  // const teste = useQuery(["data"], () => {
-  //   api.get("books", { params: { dataBookParams } }).then((r) => {
-  //     setBooks(r.data);
-  //   });
-  // });
-  // const getBooks = async () => {};
 
   return (
     <div>
