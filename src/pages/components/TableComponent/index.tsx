@@ -18,7 +18,6 @@ export function TableComponent<TData extends object>({
 }: TableComponentProps<TData>) {
   const [data, setData] = useState<TData[]>([]);
 
-  console.log(dataInfo);
   useEffect(() => {
     if (dataInfo) setData([...dataInfo]);
   }, [dataInfo]);
