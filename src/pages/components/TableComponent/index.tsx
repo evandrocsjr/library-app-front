@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { Box, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 
 interface TableComponentProps<TData> {
-  dataInfo: TData[];
+  dataInfo: TData[] | undefined;
   columns: ColumnDef<TData, any>[];
 }
 

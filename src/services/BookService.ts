@@ -1,29 +1,38 @@
 import { api } from "../lib/axios";
 import { BookProps } from "../pages/SearchBook";
 
-export const getBooks = async () => {
-  return await api
-    .get("books")
-    .then((r) => r.data)
-    .catch((e) => e.message);
-};
+interface GetBooksProps {
+  name?: string;
+  code?: string;
+  author: {
+    name?: string;
+  };
+}
 
-export const getBooksWithProps = async (name: string) => {
-  return await api.get(`books`, {
-    params: {
-      q: name,
-    },
-  });
+export const getBooks = ({
+  name,
+  code,
+  author,
+}: GetBooksProps): Promise<BookProps[]> => {
+  return api
+    .get("books", {
+      params: {
+        name_like: name,
+        code_like: code,
+      },
+    })
+    .then((r) => r.data);
 };
 
 export const getBookById = async ({ id }: BookProps) => {
-  return await api.get(`book/${id}`).then((r) => r.data);
+  const response = await api.get(`book/${id}`);
+  return response.data;
 };
 
-export const deleteBook = async ({ id }: BookProps) => {
-  return await api.delete(`book/${id}`);
+export const deleteBook = ({ id }: BookProps) => {
+  return api.delete(`book/${id}`);
 };
 
-export const updateBook = async (book: BookProps) => {
-  return await api.put(`book/${book.id}`, book);
+export const updateBook = (book: BookProps) => {
+  return api.put(`book/${book.id}`, book);
 };

@@ -10,29 +10,21 @@ import {
   Card,
   CardBody,
   Divider,
+  Grid,
+  GridItem,
   Heading,
-  HStack,
   Input,
   InputGroup,
+  Select,
   Text,
 } from "@chakra-ui/react";
 import { TableComponent } from "../components/TableComponent";
 import { createColumnHelper } from "@tanstack/react-table";
-import {
-  QueryClient,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "react-query";
+import { useQuery } from "react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
-import {
-  getBookById,
-  getBooks,
-  getBooksWithProps,
-} from "../../services/BookService";
+import { getBooks } from "../../services/BookService";
 
 export type BookProps = {
   id: number;
@@ -81,31 +73,33 @@ const columns = [
 ];
 
 const searchBookFormSchema = z.object({
-  name: z.string(),
+  name: z.string().trim(),
+  code: z.string().trim(),
   author: z.object({
-    name: z.string(),
+    name: z.string().trim(),
   }),
 });
 
 type SearchBookFormInput = z.infer<typeof searchBookFormSchema>;
 
 export function SearchBook() {
-  const queryClient = useQueryClient();
-  // Form Validation
-  const { register, handleSubmit, reset } = useForm<SearchBookFormInput>({
+  const { register, handleSubmit, getValues } = useForm<SearchBookFormInput>({
     resolver: zodResolver(searchBookFormSchema),
   });
 
-  const { isLoading, data: books } = useQuery("books", getBooks);
+  let bookValidated: SearchBookFormInput = getValues();
 
-  const getBookMutation = useMutation(getBooksWithProps, {
-    onSuccess: ({ data }) => {
-      queryClient.setQueriesData("books", data);
-    },
+  const {
+    isFetching,
+    data: books,
+    refetch,
+  } = useQuery<BookProps[], Error>("books", () => {
+    return getBooks(bookValidated);
   });
 
-  function handleSearchBook(dataBook: SearchBookFormInput) {
-    getBookMutation.mutate(dataBook.name);
+  function handleSearchBook(e: SearchBookFormInput) {
+    bookValidated = e;
+    refetch();
   }
 
   return (
@@ -120,21 +114,27 @@ export function SearchBook() {
       <Card>
         <CardBody>
           <form onSubmit={handleSubmit(handleSearchBook)}>
-            <div>
-              <Text>Nome do Livro</Text>
-              <InputGroup>
-                <Input borderRightRadius={0} {...register("name")} />
-                <Button
-                  variant="solid"
-                  isLoading={isLoading}
-                  loadingText={"Carregando"}
-                  borderLeftRadius="0"
-                  type="submit"
-                >
-                  <MagnifyingGlass size={32} /> Pesquisar
-                </Button>
-              </InputGroup>
-            </div>
+            <Grid gap={2}>
+              <GridItem>
+                <Text>Nome do Livro</Text>
+                <InputGroup>
+                  <Input borderRightRadius={0} {...register("name")} />
+                  <Button
+                    type="submit"
+                    variant="solid"
+                    isLoading={isFetching}
+                    loadingText={"Carregando"}
+                    borderLeftRadius="0"
+                  >
+                    <MagnifyingGlass size={32} /> Pesquisar
+                  </Button>
+                </InputGroup>
+              </GridItem>
+              <GridItem>
+                <Text>Código do Livro</Text>
+                <Input {...register("code")} />
+              </GridItem>
+            </Grid>
 
             <Divider orientation="horizontal" my="1rem" />
 
@@ -152,16 +152,27 @@ export function SearchBook() {
                   </AccordionButton>
                 </h2>
                 <AccordionPanel pb={4}>
-                  <HStack spacing="1rem">
-                    <Box w="50%">
+                  <Grid
+                    templateColumns="repeat(2, 1fr)"
+                    columnGap={6}
+                    rowGap={2}
+                  >
+                    <GridItem>
                       <Text>Nome do Autor</Text>
                       <Input {...register("author.name")} />
-                    </Box>
-                    <Box w="50%">
+                    </GridItem>
+                    <GridItem>
                       <Text>Data de Lançamento</Text>
                       <Input type="datetime-local" />
-                    </Box>
-                  </HStack>
+                    </GridItem>
+                    <GridItem>
+                      <Text>Disponibilidade</Text>
+                      <Select placeholder="Selecione a disponibilidade">
+                        <option>Disponível</option>
+                        <option>Indisponível</option>
+                      </Select>
+                    </GridItem>
+                  </Grid>
                 </AccordionPanel>
               </AccordionItem>
             </Accordion>
