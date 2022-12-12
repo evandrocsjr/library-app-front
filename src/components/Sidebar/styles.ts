@@ -1,16 +1,19 @@
 import styled from "styled-components";
 
 export const SidebarContainer = styled.div`
-  border-radius: 8px;
+  //border-radius: 8px;
   background-color: ${(props) => props.theme["blue-900"]};
-  height: 80vh;
+  height: 100%;
+  min-height: 100vh;
   width: 4.3rem;
-  margin-left: 1rem;
-  margin-top: 1rem;
+  //margin-left: 1rem;
+  //margin-top: 1rem;
   color: ${(props) => props.theme.white};
   transition: ease 0.2s;
   padding: 1rem 1rem 0 1rem;
   white-space: nowrap;
+  position: absolute;
+  z-index: 99999;
 
   div img {
     width: 40px;
@@ -25,16 +28,16 @@ export const SidebarContainer = styled.div`
     list-style: none;
   }
 
-  &:hover {
-    width: 18rem;
-
-    div img {
-      width: 100px;
-    }
-
-    ul li span {
-      display: block;
-    }
+  //&:hover {
+  //  width: 18rem;
+  //
+  //  div img {
+  //    width: 100px;
+  //  }
+  //
+  //  ul li span {
+  //    display: block;
+  //  }
   }
 `;
 

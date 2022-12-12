@@ -6,10 +6,10 @@ import { Box, Flex } from "@chakra-ui/react";
 export function DefaultLayout() {
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       <Flex>
         <Sidebar />
-        <Box padding="1rem" flex="1">
+        <Box padding="1rem" ml={"5rem"} flex="1">
           <Outlet />
         </Box>
       </Flex>

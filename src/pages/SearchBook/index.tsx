@@ -22,7 +22,7 @@ import { TableComponent } from "../components/TableComponent";
 import { createColumnHelper } from "@tanstack/react-table";
 import { useQuery } from "react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { getBooks } from "../../services/BookService";
 
@@ -153,7 +153,7 @@ export function SearchBook() {
                 </h2>
                 <AccordionPanel pb={4}>
                   <Grid
-                    templateColumns="repeat(2, 1fr)"
+                    templateColumns={{ md: "repeat(2, 1fr)" }}
                     columnGap={6}
                     rowGap={2}
                   >
