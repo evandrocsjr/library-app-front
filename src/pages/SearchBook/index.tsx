@@ -116,7 +116,7 @@ export function SearchBook() {
           <form onSubmit={handleSubmit(handleSearchBook)}>
             <Grid gap={2}>
               <GridItem>
-                <Text>Nome do Livro</Text>
+                <Text fontWeight="bold">Nome do Livro</Text>
                 <InputGroup>
                   <Input borderRightRadius={0} {...register("name")} />
                   <Button
@@ -131,7 +131,7 @@ export function SearchBook() {
                 </InputGroup>
               </GridItem>
               <GridItem>
-                <Text>Código do Livro</Text>
+                <Text fontWeight="bold">Código do Livro</Text>
                 <Input {...register("code")} />
               </GridItem>
             </Grid>
@@ -142,7 +142,8 @@ export function SearchBook() {
               <AccordionItem>
                 <h2>
                   <AccordionButton
-                    bg={"gray.200"}
+                    borderRadius="5px"
+                    bg={"gray.300"}
                     _expanded={{ bg: "blue.300", color: "white" }}
                   >
                     <Box flex="1" textAlign="left">

@@ -5,7 +5,16 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
-import { Box, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import {
+  Box,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
 
 interface TableComponentProps<TData> {
   dataInfo: TData[] | undefined;
@@ -29,8 +38,8 @@ export function TableComponent<TData extends object>({
   });
 
   return (
-    <Box w="100%" mt={"2rem"}>
-      <Table w="100%" variant="striped" colorScheme="gray">
+    <TableContainer w="100%" mt={"2rem"}>
+      <Table w="100%" variant="striped" size="md" colorScheme="gray">
         <Thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <Tr key={headerGroup.id}>
@@ -75,6 +84,6 @@ export function TableComponent<TData extends object>({
         {/*  ))} */}
         {/* </tfoot> */}
       </Table>
-    </Box>
+    </TableContainer>
   );
 }
