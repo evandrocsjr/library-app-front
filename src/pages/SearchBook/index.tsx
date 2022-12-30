@@ -24,19 +24,7 @@ import { useQuery } from "react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { getBooks } from "../../services/BookService";
-
-export type BookProps = {
-  id: number;
-  code: string;
-  name: string;
-  releaseDate: Date;
-  progress: number;
-  availability: boolean;
-  author: {
-    name: string;
-  };
-};
+import { BookProps, getBooks } from "../../services/BookService";
 
 const columnHelper = createColumnHelper<BookProps>();
 

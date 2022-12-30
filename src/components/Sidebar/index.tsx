@@ -2,7 +2,7 @@ import { Books, Gear, House, MagnifyingGlass } from "phosphor-react";
 import { Box, Image, Img, List, Tooltip } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import logoImg from "../../assets/logo_ufn.png";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 interface SidebarMenuItems {
   name: string;
@@ -18,6 +18,12 @@ const sidebarItems: SidebarMenuItems[] = [
 ];
 
 export default function Sidebar() {
+  const location = useLocation();
+
+  function bgColorSidebarItemFocus(item: SidebarMenuItems) {
+    return item.to === location.pathname ? "blue.600" : "";
+  }
+
   return (
     // // <SidebarContainer>
     //   {/* <SidebarLogoContainer> */}
@@ -34,7 +40,7 @@ export default function Sidebar() {
       minHeight="100vh"
       height="100%"
       position="absolute"
-      w={"4rem"}
+      w="4rem"
     >
       <Box mb="1rem">
         <Image boxSize={""} src={logoImg} alt="" />
@@ -43,21 +49,24 @@ export default function Sidebar() {
       {sidebarItems.map((item) => {
         return (
           <Tooltip
+            placement="right-start"
             key={item.name}
             bg="gray.300"
             hasArrow
             label={item.name}
             color="black"
             borderRadius="2px"
-            p={2}
-            display={"flex"}
+            p="2"
+            display="flex"
           >
             <NavLink to={item.to}>
               <Box
-                p={2}
+                p="2"
+                mt="1"
                 _hover={{ bg: "blue.600" }}
                 borderRadius="8px"
-                cursor={"pointer"}
+                bg={bgColorSidebarItemFocus(item)}
+                cursor="pointer"
               >
                 {item.icon}
               </Box>

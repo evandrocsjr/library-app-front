@@ -1,5 +1,17 @@
 import { api } from "../lib/axios";
-import { BookProps } from "../pages/SearchBook";
+
+export type BookProps = {
+  id?: number;
+  code?: string;
+  name: string;
+  releaseDate?: string;
+  progress?: number;
+  availability?: boolean;
+  author: {
+    name: string;
+  };
+  description?: string;
+};
 
 interface GetBooksProps {
   name?: string;
@@ -27,6 +39,10 @@ export const getBooks = ({
 export const getBookById = async ({ id }: BookProps) => {
   const response = await api.get(`book/${id}`);
   return response.data;
+};
+
+export const postBook = (book: BookProps) => {
+  return api.post(`books`, book);
 };
 
 export const deleteBook = ({ id }: BookProps) => {
