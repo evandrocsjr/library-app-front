@@ -107,7 +107,7 @@ export function SearchBook() {
   }
 
   return (
-    <div>
+    <Grid>
       <Heading as="h3" size="lg" display="flex" alignItems="center">
         <Book />
         <Text>Pesquisa de Livros</Text>
@@ -182,9 +182,10 @@ export function SearchBook() {
               </AccordionItem>
             </Accordion>
           </form>
+
           <TableComponent dataInfo={books} columns={columns}></TableComponent>
         </CardBody>
       </Card>
-    </div>
+    </Grid>
   );
 }

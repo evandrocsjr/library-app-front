@@ -38,7 +38,7 @@ export function TableComponent<TData extends object>({
   });
 
   return (
-    <TableContainer mt={"2rem"}>
+    <TableContainer mt="2rem">
       <Table variant="simple" size="md" colorScheme="gray">
         <Thead>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -46,8 +46,8 @@ export function TableComponent<TData extends object>({
               {headerGroup.headers.map((header) => (
                 <Th
                   key={header.id}
-                  borderWidth={"1px"}
-                  borderColor={"blackAlpha.200"}
+                  borderWidth="1px"
+                  borderColor="blackAlpha.200"
                 >
                   {header.isPlaceholder
                     ? null
