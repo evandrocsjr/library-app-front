@@ -1,4 +1,4 @@
-import { Book, Check, MagnifyingGlass, X } from "phosphor-react";
+import { Book, Check, MagnifyingGlass, Pencil, Trash, X } from "phosphor-react";
 import {
   Accordion,
   AccordionButton,
@@ -20,11 +20,13 @@ import {
 } from "@chakra-ui/react";
 import { TableComponent } from "../components/TableComponent";
 import { createColumnHelper } from "@tanstack/react-table";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { BookProps, getBooks } from "../../services/BookService";
+import { useBooks } from "../../services/hooks/useBooks";
+import { useState } from "react";
 
 const columnHelper = createColumnHelper<BookProps>();
 
@@ -58,6 +60,27 @@ const columns = [
     ),
     header: () => "Disponibilidade",
   }),
+  columnHelper.accessor("id", {
+    header: () => (
+      <Box justifyContent="center" textAlign="center">
+        Ação
+      </Box>
+    ),
+    cell: (info) => (
+      <Grid gridTemplateColumns={{ md: "repeat(2, 1fr)" }} gap="1">
+        <GridItem>
+          <Button colorScheme="blue" size="sm">
+            <Pencil />
+          </Button>
+        </GridItem>
+        <GridItem>
+          <Button colorScheme="red" size="sm">
+            <Trash />
+          </Button>
+        </GridItem>
+      </Grid>
+    ),
+  }),
 ];
 
 const searchBookFormSchema = z.object({
@@ -71,23 +94,16 @@ const searchBookFormSchema = z.object({
 type SearchBookFormInput = z.infer<typeof searchBookFormSchema>;
 
 export function SearchBook() {
-  const { register, handleSubmit, getValues } = useForm<SearchBookFormInput>({
+  const { register, handleSubmit } = useForm<SearchBookFormInput>({
     resolver: zodResolver(searchBookFormSchema),
   });
+  console.log("sdadasdasd");
+  const [filter, setFilter] = useState({});
 
-  let bookValidated: SearchBookFormInput = getValues();
-
-  const {
-    isFetching,
-    data: books,
-    refetch,
-  } = useQuery<BookProps[], Error>("books", () => {
-    return getBooks(bookValidated);
-  });
+  const { isFetching, data: books } = useBooks(filter);
 
   function handleSearchBook(e: SearchBookFormInput) {
-    bookValidated = e;
-    refetch();
+    setFilter(e);
   }
 
   return (

@@ -38,13 +38,17 @@ export function TableComponent<TData extends object>({
   });
 
   return (
-    <TableContainer w="100%" mt={"2rem"}>
-      <Table w="100%" variant="striped" size="md" colorScheme="gray">
+    <TableContainer mt={"2rem"}>
+      <Table variant="simple" size="md" colorScheme="gray">
         <Thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <Tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <Th key={header.id}>
+                <Th
+                  key={header.id}
+                  borderWidth={"1px"}
+                  borderColor={"blackAlpha.200"}
+                >
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -58,9 +62,13 @@ export function TableComponent<TData extends object>({
         </Thead>
         <Tbody>
           {table.getRowModel().rows.map((row) => (
-            <Tr key={row.id}>
+            <Tr key={row.id} borderWidth={"1px"} borderColor={"blackAlpha.200"}>
               {row.getVisibleCells().map((cell) => (
-                <Td key={cell.id}>
+                <Td
+                  key={cell.id}
+                  borderWidth={"1px"}
+                  borderColor={"blackAlpha.200"}
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </Td>
               ))}

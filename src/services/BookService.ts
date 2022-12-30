@@ -13,27 +13,26 @@ export type BookProps = {
   description?: string;
 };
 
-interface GetBooksProps {
+export interface SearchBooksProps {
   name?: string;
   code?: string;
-  author: {
-    name?: string;
+  author?: {
+    name: string;
   };
 }
 
-export const getBooks = ({
+export const getBooks = async ({
   name,
   code,
   author,
-}: GetBooksProps): Promise<BookProps[]> => {
-  return api
-    .get("books", {
-      params: {
-        name_like: name,
-        code_like: code,
-      },
-    })
-    .then((r) => r.data);
+}: SearchBooksProps): Promise<BookProps[]> => {
+  const response = await api.get("books", {
+    params: {
+      name_like: name,
+      code_like: code,
+    },
+  });
+  return response.data;
 };
 
 export const getBookById = async ({ id }: BookProps) => {
