@@ -94,13 +94,11 @@ const searchBookFormSchema = z.object({
 type SearchBookFormInput = z.infer<typeof searchBookFormSchema>;
 
 export function SearchBook() {
+  const [filter, setFilter] = useState({});
+  const { isFetching, data: books } = useBooks(filter);
   const { register, handleSubmit } = useForm<SearchBookFormInput>({
     resolver: zodResolver(searchBookFormSchema),
   });
-  console.log("sdadasdasd");
-  const [filter, setFilter] = useState({});
-
-  const { isFetching, data: books } = useBooks(filter);
 
   function handleSearchBook(e: SearchBookFormInput) {
     setFilter(e);
