@@ -18,10 +18,10 @@ const sidebarItems: SidebarMenuItems[] = [
 ];
 
 export default function Sidebar() {
-  const location = useLocation();
+  const { pathname } = useLocation();
 
   function bgColorSidebarItemFocus(item: SidebarMenuItems) {
-    return item.to === location.pathname ? "blue.600" : "";
+    return item.to === pathname ? "blue.600" : "";
   }
 
   return (
