@@ -45,7 +45,7 @@ const columns = [
     header: () => <span>Data de Lançamento</span>,
     footer: (info) => info.column.id,
   }),
-  columnHelper.accessor((row) => row.author.name, {
+  columnHelper.accessor((row) => row.author, {
     id: "author",
     cell: (info) => info.getValue(),
     header: () => <span>Nome do Autor</span>,

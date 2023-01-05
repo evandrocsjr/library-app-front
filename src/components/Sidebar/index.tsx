@@ -13,7 +13,7 @@ interface SidebarMenuItems {
 const sidebarItems: SidebarMenuItems[] = [
   { name: "Página Principal", to: "", icon: <House size={22} /> },
   { name: "Pesquisa", to: "/", icon: <MagnifyingGlass size={22} /> },
-  { name: "Cadastros", to: "/registrationBook", icon: <Books size={22} /> },
+  { name: "Cadastros", to: "/registration", icon: <Books size={22} /> },
   { name: "Configurações", to: "", icon: <Gear size={22} /> },
 ];
 
