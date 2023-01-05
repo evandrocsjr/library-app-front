@@ -11,12 +11,15 @@ import {
   Input,
   Text,
   Textarea,
+  useToast,
 } from "@chakra-ui/react";
-import { Plus } from "phosphor-react";
+import { Plus, X } from "phosphor-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "react-query";
+import { postAuthor } from "../../services/AuthorService";
+import { useNavigate } from "react-router-dom";
 
 const createNewAuthorFormSchema = z.object({
   name: z.string(),
@@ -26,13 +29,27 @@ const createNewAuthorFormSchema = z.object({
 type CreateAuthorFormInput = z.infer<typeof createNewAuthorFormSchema>;
 
 export function RegistrationAuthor() {
-  const { register, handleSubmit } = useForm<CreateAuthorFormInput>({
+  const infoToast = useToast();
+  const navigate = useNavigate();
+  const { register, handleSubmit, reset } = useForm<CreateAuthorFormInput>({
     resolver: zodResolver(createNewAuthorFormSchema),
   });
 
-  const { isLoading } = useMutation();
+  const createAuthor = useMutation(postAuthor, {
+    onSuccess: () => {
+      infoToast({
+        description: "Autor Criado com Sucesso!",
+        title: "Sucesso",
+        status: "success",
+        position: "top-right",
+      });
+      reset();
+    },
+  });
 
-  function handleCreateNewAuthor() {}
+  function handleCreateNewAuthor(author: CreateAuthorFormInput) {
+    createAuthor.mutate(author);
+  }
   return (
     <div>
       <Heading as="h3" size="lg" display="flex" alignItems="center">
@@ -71,17 +88,36 @@ export function RegistrationAuthor() {
                   ></Textarea>
                 </FormControl>
               </GridItem>
+              <GridItem>
+                <Grid
+                  templateColumns={{ md: "repeat(2, 1fr)" }}
+                  mt="10px"
+                  gap="1rem"
+                >
+                  <Button
+                    type="submit"
+                    colorScheme={"blue"}
+                    mt={2}
+                    size="sm"
+                    leftIcon={<Plus />}
+                    isLoading={createAuthor.isLoading}
+                    loadingText="Cadastrando"
+                  >
+                    Cadastrar
+                  </Button>
+                  <Button
+                    colorScheme={"red"}
+                    mt={2}
+                    size="sm"
+                    onClick={() => navigate(-1)}
+                    leftIcon={<X />}
+                    loadingText="Cadastrando"
+                  >
+                    Cancelar
+                  </Button>
+                </Grid>
+              </GridItem>
             </Grid>
-            <Button
-              type="submit"
-              colorScheme={"blue"}
-              mt={2}
-              leftIcon={<Plus />}
-              isLoading={isLoading}
-              loadingText="Cadastrando"
-            >
-              Cadastrar
-            </Button>
           </form>
         </CardBody>
       </Card>

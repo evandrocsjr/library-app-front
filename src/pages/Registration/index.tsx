@@ -1,4 +1,12 @@
-import { Divider, Grid, GridItem, Heading, Link, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Divider,
+  Grid,
+  GridItem,
+  Heading,
+  Link,
+  Text,
+} from "@chakra-ui/react";
 import { PlusCircle } from "phosphor-react";
 import { NavLink } from "react-router-dom";
 
@@ -12,12 +20,32 @@ export function Registration() {
 
       <Divider orientation="horizontal" my="1rem" />
 
-      <Grid gridTemplateColumns="repeat(2, 1fr)" gap="1rem">
-        <GridItem borderRadius="8px" bgColor="gray.200" p="1rem">
-          <NavLink to="/registrationBook">Cadastro de Livros</NavLink>
+      <Grid gridTemplateColumns={{ md: "repeat(2, 1fr)" }} gap="1rem">
+        <GridItem>
+          <NavLink to="/registrationBook">
+            <Button
+              w={"100%"}
+              borderRadius="8px"
+              bgColor="blue.100"
+              _hover={{ bg: "blue.500", color: "white" }}
+              p="1rem"
+            >
+              Cadastro de Livros
+            </Button>
+          </NavLink>
         </GridItem>
-        <GridItem borderRadius="8px" bgColor="gray.200" p="1rem">
-          <NavLink to="/registrationAuthor">Cadastro de Autores</NavLink>
+        <GridItem>
+          <NavLink to="/registrationAuthor">
+            <Button
+              w={"100%"}
+              borderRadius="8px"
+              bgColor="blue.100"
+              _hover={{ bg: "blue.500", color: "white" }}
+              p="1rem"
+            >
+              Cadastro de Autores
+            </Button>
+          </NavLink>
         </GridItem>
       </Grid>
     </Grid>
