@@ -1,4 +1,11 @@
-import { Books, Gear, House, MagnifyingGlass } from "phosphor-react";
+import {
+  Books,
+  Gear,
+  House,
+  MagnifyingGlass,
+  Person,
+  User,
+} from "phosphor-react";
 import { Box, Image, List, Tooltip } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import logoImg from "../../assets/logo_ufn.png";
@@ -12,8 +19,9 @@ interface SidebarMenuItems {
 
 const sidebarItems: SidebarMenuItems[] = [
   { name: "Página Principal", to: "", icon: <House size={22} /> },
-  { name: "Pesquisa", to: "/", icon: <MagnifyingGlass size={22} /> },
-  { name: "Cadastros", to: "/registration", icon: <Books size={22} /> },
+  // { name: "Pesquisa", to: "/", icon: <MagnifyingGlass size={22} /> },
+  { name: "Livros", to: "/book", icon: <Books size={22} /> },
+  { name: "Autores", to: "/author", icon: <User size={22} /> },
   { name: "Configurações", to: "", icon: <Gear size={22} /> },
 ];
 

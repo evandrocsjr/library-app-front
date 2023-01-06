@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "react-query";
-import { postAuthor } from "../../services/AuthorService";
+import { postAuthor } from "../../../services/AuthorService";
 import { useNavigate } from "react-router-dom";
 
 const createNewAuthorFormSchema = z.object({
